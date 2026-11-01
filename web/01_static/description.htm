@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Индивидуальный проект Робот-моноколесист</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 class="page-title">Индивидуальный проект<br>"Действующая модель робота Фентона Крякшелла"</h1>
+
+    <div class="main-container">
+        <ul class="rectangle-menu">
+            <li class="menu-item active" data-text="Проект реализует электронно-механически стабилизированную платформу с приводом по колесной формуле 1х1.">Краткое описание</li>
+            <li class="menu-item" data-text="Стабилизация робота в продольном направлении обеспечивается PID контроллером с электронным гироскопом. В поперечном направлении используется авторский алгоритм управления">Стабилизация робота</li>
+            <li class="menu-item" data-text="В основе конструкции лежит трехфазный электродвигатель с магнитным датчиком положения вала. Трехфазный ток вырабатывается контроллером управления двигателем."> Электромеханическая часть</li>
+            <li class="menu-item" data-text="Управление роботом происходит через главный контроллер, основанный на Raspberry Pi. Он считывает данные с гироскопа/акселлерометра, обрабатывает их и выдает управляющий сигнал для электродвигателя.">Программная часть</li>
+        </ul>
+
+        <div class="image-container">
+            <img src="robot.jfif" alt="Пример изображения" class="content-image">
+        </div>
+    </div>
+
+     <div class="info-block">
+        <p id="dynamic-text">Вы открыли Главную страницу. Здесь находится основная информация.</p>
+    </div>
+
+    <script>
+        const menuItems = document.querySelectorAll('.menu-item');
+        const dynamicText = document.getElementById('dynamic-text');
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelector('.menu-item.active').classList.remove('active');
+                item.classList.add('active');
+                const newText = item.getAttribute('data-text');
+                dynamicText.textContent = newText;
+            });
+        });
+    </script>
+</body>
+</html>
