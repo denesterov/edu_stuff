@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Ученики</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <nav><a href="/">Ученики</a><a href="/grades">Оценки</a><a href="/stats">Статистика</a></nav>
+    
+    <h1>🎓 Управление списком учеников</h1>
+
+    <div id="app">
+        <!-- Форма добавления -->
+        <form @submit.prevent="addStudent">
+            <input v-model="form.first_name" placeholder="Имя" required>
+            <input v-model="form.last_name" placeholder="Фамилия" required>
+            <button type="submit">Добавить</button>
+        </form>
+
+        <!-- Список -->
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Имя</th><th>Фамилия</th><th>Действие</th></tr>
+            </thead>
+            <tbody>
+                <tr v-for="student in students" :key="student.id">
+                    <td>[[ student.id ]]</td>
+                    <td>[[ student.first_name ]]</td>
+                    <td>[[ student.last_name ]]</td>
+                    <td><button class="danger" @click="deleteStudent(student.id)">Удалить</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            delimiters: ['[[', ']]'], // Меняем разделители, чтобы они не конфликтовали с Jinja2 { { } }
+            data() {
+                return {
+                    students: [],
+                    form: { first_name: '', last_name: '' }
+                }
+            },
+            created() { this.fetchStudents(); },
+            methods: {
+                async fetchStudents() {
+                    const res = await fetch('/api/students');
+                    this.students = await res.json();
+                },
+                async addStudent() {
+                    await fetch('/api/students', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(this.form)
+                    });
+                    this.form.first_name = ''; this.form.last_name = '';
+                    this.fetchStudents();
+                },
+                async deleteStudent(id) {
+                    if (confirm("Удалить ученика и все его оценки?")) {
+                        await fetch(`/api/students/${id}`, { method: 'DELETE' });
+                        this.fetchStudents();
+                    }
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

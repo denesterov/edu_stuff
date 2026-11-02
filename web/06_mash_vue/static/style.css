@@ -1,0 +1,13 @@
+body { font-family: sans-serif; max-width: 800px; margin: 20px auto; padding: 0 20px; color: #333; }
+nav { margin-bottom: 30px; padding-bottom: 10px; border-bottom: 2px solid #eee; }
+nav a { margin-right: 15px; text-decoration: none; color: #007BFF; font-weight: bold; }
+nav a:hover { text-decoration: underline; }
+form { background: #f9f9f9; padding: 15px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 20px; }
+input, select { padding: 6px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px; }
+button { background: #007BFF; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; }
+button:hover { background: #0056b3; }
+button.danger { background: #DC3545; }
+button.danger:hover { background: #bd2130; }
+table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }

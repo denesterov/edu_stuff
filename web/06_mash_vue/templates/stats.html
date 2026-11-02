@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Статистика успеваемости</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav><a href="/">Ученики</a><a href="/grades">Оценки</a><a href="/stats">Статистика</a></nav>
+    
+    <h1>📊 Статистика успеваемости</h1>
+
+    <h3>Общая средняя оценка учеников</h3>
+    <table>
+        <thead><tr><th>Ученик</th><th>Средний балл (Все время)</th></tr></thead>
+        <tbody>
+            {% for s in students_avg %}
+            <tr><td>{{ s.last_name }} {{ s.first_name }}</td><td>{{ s.avg_grade or 'Нет оценок' }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Средняя оценка учеников по неделям</h3>
+    <table>
+        <thead><tr><th>Ученик</th><th>Номер недели</th><th>Средний балл за неделю</th></tr></thead>
+        <tbody>
+            {% for row in student_weekly %}
+            <tr><td>{{ row.last_name }} {{ row.first_name }}</td><td>Неделя {{ row.week }}</td><td>{{ row.avg_grade }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Средняя оценка всего класса по неделям</h3>
+    <table>
+        <thead><tr><th>Номер недели</th><th>Средний балл класса</th></tr></thead>
+        <tbody>
+            {% for row in class_weekly %}
+            <tr><td>Неделя {{ row.week }}</td><td>{{ row.avg_grade }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Выставление оценок</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <nav><a href="/">Ученики</a><a href="/grades">Оценки</a><a href="/stats">Статистика</a></nav>
+    
+    <h1>📝 Выставление оценок</h1>
+
+    <div id="app">
+        <form @submit.prevent="addGrade">
+            <select v-model="form.student_id" required>
+                <option value="" disabled>Выберите ученика</option>
+                <option v-for="s in students" :value="s.id">[[ s.last_name ]] [[ s.first_name ]]</option>
+            </select>
+
+            <select v-model.number="form.grade" required>
+                <option value="" disabled>Оценка</option>
+                <option v-for="n in 5" :value="n">[[ n ]]</option>
+            </select>
+
+            <button type="submit">Поставить оценку</button>
+        </form>
+        <p v-if="successMessage" style="color: green;">[[ successMessage ]]</p>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            delimiters: ['[[', ']]'],
+            data() {
+                return {
+                    students: [],
+                    form: { student_id: '', grade: '' },
+                    successMessage: ''
+                }
+            },
+            created() { this.fetchStudents(); },
+            methods: {
+                async fetchStudents() {
+                    const res = await fetch('/api/students');
+                    this.students = await res.json();
+                },
+                async addGrade() {
+                    await fetch('/api/grades', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(this.form)
+                    });
+                    this.successMessage = "Оценка успешно добавлена!";
+                    this.form.student_id = ''; this.form.grade = '';
+                    setTimeout(() => this.successMessage = '', 3000);
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
